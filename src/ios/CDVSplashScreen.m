@@ -66,6 +66,7 @@
      *
      */
     NSString* topActivityIndicator = [self.commandDelegate.settings objectForKey:[@"TopActivityIndicator" lowercaseString]];
+    NSString* activityIndicatorColor = [self.commandDelegate.settings objectForKey:[@"TopActivityIndicatorColor" lowercaseString]];
     UIActivityIndicatorViewStyle topActivityIndicatorStyle = UIActivityIndicatorViewStyleGray;
 
     if ([topActivityIndicator isEqualToString:@"whiteLarge"]) {
@@ -76,9 +77,22 @@
         topActivityIndicatorStyle = UIActivityIndicatorViewStyleGray;
     }
 
+    UIColor *color = NULL;
+    if ([activityIndicatorColor isEqualToString:@"white"]) {
+        color = [UIColor whiteColor];
+    } else if ([activityIndicatorColor isEqualToString:@"gray"]) {
+        color = [UIColor grayColor];
+    } else if ([activityIndicatorColor isEqualToString:@"black"]) {
+        color = [UIColor blackColor];
+    }
+
     UIView* parentView = self.viewController.view;
     parentView.userInteractionEnabled = NO;  // disable user interaction while splashscreen is shown
     _activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:topActivityIndicatorStyle];
+
+    if (color) {
+        _activityView.color = color;
+    }
     _activityView.center = CGPointMake(parentView.bounds.size.width / 2, parentView.bounds.size.height / 2);
     _activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin
         | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
